@@ -4,11 +4,50 @@
 This is a quick and dirty tour of using Python 3's urllib to trace
 a list of URLs through to their final redirected address.
 
-## Assumption
+## Assumptions
 
 1. you have a file called *starting-urls.txt* with one url per line
-2. you are going to output a CSV formated list of starting url and final url
-3. we are doing this with a simple Python 3 script.
+2. you are going to output a CSV formated list of "Starting URL" and "Final URL"
+3. we are doing this with a simple Python 3 script called *urltracer.py*.
+
+## The script
+
+In this script we are using Python 3's urllib package. In particular we're
+using two functions from it, _Request_ and _urlopen_.  The first function
+formats a URL into a request object (e.g. req variable below) and the second
+retrieves a result from the web where, if successful, we output the original
+url and final url (i.e. the line with `response.geturl()`). If the response
+is not successful then we just return a line with a starting URL and no 
+final one.
+
+```python
+    #!/usr/bin/env python3
+    
+    # Import what we need in order to make our requests and track the responses
+    from urllib.request import Request, urlopen
+    
+    def trace_url(url):
+        req = Request(url)
+        with urlopen(req) as response:
+            # Our resolved url
+            return url + ', ' + response.geturl()
+        # We didn't move, e.g. the URL returned an error like a 404 or 401
+        return url + ','
+    
+    #
+    # Main workflow
+    #
+    
+    # Read in the list of URLs to track from a file called "starting-urls.txt"
+    with open('starting-urls.txt', mode = 'r', encoding = 'utf-8') as f:
+        src = f.read()
+    
+    # Split "src" into a list of urls, one per line
+    print("Starting URL, Final URL")
+    for line in src.split('\n'):
+        if len(line) > 0:
+            print(trace_url(line))
+```
 
 ## Running the demo
 
