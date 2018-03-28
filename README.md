@@ -20,6 +20,9 @@ url and final url (i.e. the line with `response.geturl()`). If the response
 is not successful then we just return a line with a starting URL and no 
 final one.
 
+The useful work is done with the `trace_url(url)` function. The rest of the script
+is just looping through our list of URLs and writing the results out.
+
 ```python
     #!/usr/bin/env python3
     
