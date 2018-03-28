@@ -7,7 +7,7 @@ a list of URLs through to their final redirected address.
 ## Assumptions
 
 1. you have a file called *starting-urls.txt* with one url per line
-2. you are going to output a CSV formated list of "Starting URL" and "Final URL"
+2. you are going to output a CSV   list of "Starting URL" and "Final URL"
 3. we are doing this with a simple Python 3 script called *urltracer.py*.
 
 ## The script
