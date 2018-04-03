@@ -2,14 +2,24 @@
 
 # Import what we need in order to make our requests and track the responses
 from urllib.request import Request, urlopen
+from urllib.error import HTTPError, URLError
 
 def trace_url(url):
     req = Request(url)
-    with urlopen(req) as response:
-        # Our resolved url
-        return url + ', ' + response.geturl()
-    # We didn't move, e.g. the URL returned an error like a 404 or 401
-    return url + ','
+    response = None
+    status_code = ""
+    reason = ""
+    final_url = ""
+    try: 
+        response = urlopen(req)
+        finalURL = response.geturl()
+        status_code = str(response.status)
+    except HTTPError as e:
+        status_code = str(e.code)
+    except URLError as e:
+        status_code = str(e.reason)
+
+    return url + ',' + final_url + ', ' + status_code
 
 #
 # Main workflow
@@ -23,7 +33,7 @@ with open('starting-urls.txt', mode = 'r', encoding = 'utf-8') as f:
 print("Starting URL, Final URL")
 for line in src.split('\n'):
     if len(line) > 0:
-        print(trace_url(line))
+        print(trace_url(line.strip()))
 
 
 
